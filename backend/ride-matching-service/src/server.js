@@ -2,8 +2,13 @@ const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
 
+const matchingRoutes = require("./routes/matchingRoutes");
+const { startRideSubscriber } = require("./events/rideSubscriber");
+
+startRideSubscriber();
 const app = express();
 
+app.use("/match", matchingRoutes);
 app.use(cors());
 app.use(express.json());
 
