@@ -1,6 +1,6 @@
 // Driver Location Update Service
 
-const redis = require("../config/redis");
+const redis = require("../../../shared/redisClient");
 
 async function updateDriverLocation(driverId, lat, lng) {
 
@@ -12,7 +12,7 @@ async function updateDriverLocation(driverId, lat, lng) {
     timestamp: Date.now()
   };
 
-  await redis.set(key, JSON.stringify(locationData));
+  await redis.set(key, JSON.stringify(locationData), "EX", 10); // Set location with 10 second expiry
 
   await redis.sadd("drivers:active", driverId);
 
