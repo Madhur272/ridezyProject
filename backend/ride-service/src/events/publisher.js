@@ -1,4 +1,4 @@
-const redis = require("../config/redis");
+const redis = require("../../../shared/redisClient");
 const pino = require("pino");
 
 const logger = pino({

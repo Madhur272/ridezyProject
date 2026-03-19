@@ -5,7 +5,7 @@ const { rideRequested } = require("../events/rideEvents");
 async function createRide(req, res) {
 
   const ride = {
-    riderId: req.body.riderId,
+    rideId: req.body.rideId,
     pickup: req.body.pickup
   };
 

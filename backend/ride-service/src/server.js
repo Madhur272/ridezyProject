@@ -1,9 +1,11 @@
 const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
+const redis = require("../../shared/redisClient");
 
 const locationRoutes = require("./routes/locationRoutes");
 const { subscribe } = require("./events/subscriber");
+const rideRoutes = require("./routes/rideRoutes");
 
 const pino = require("pino");
 
@@ -22,6 +24,7 @@ subscribe("ride_requests", (data) => {
 app.use(cors());
 app.use(express.json());
 app.use("/location", locationRoutes);
+app.use("/ride", rideRoutes);
 
 const PORT = process.env.PORT || 3000;
 

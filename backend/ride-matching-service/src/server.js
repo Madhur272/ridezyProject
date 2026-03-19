@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
+const redis = require("../../shared/redisClient");
 
 const pino = require("pino");
 const logger = pino({
@@ -9,22 +10,22 @@ const logger = pino({
 module.exports = logger;
 
 const matchingRoutes = require("./routes/matchingRoutes");
-const { startRideSubscriber } = require("./events/rideSubscriber");
+const { startRideSubscriber }  = require("./events/rideSubscriber");
 const { subscribe } = require("./events/subscriber");
 
 startRideSubscriber();
 
-subscribe("ride_requests", (data) => {
+subscribe("ride_requested", (data) => {
   logger.info("New Ride Request:", data);
 });
 
 const app = express();
 
-app.use("/match", matchingRoutes);
 app.use(cors());
 app.use(express.json());
-
-const PORT = process.env.PORT || 3000;
+app.use("/match", matchingRoutes);
+// app.use('/ride', startRideSubscriber);
+const PORT = process.env.PORT || 4008;
 
 app.get("/health", async (req, res) => {
 
