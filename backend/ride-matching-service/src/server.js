@@ -12,8 +12,12 @@ module.exports = logger;
 const matchingRoutes = require("./routes/matchingRoutes");
 const { startRideSubscriber }  = require("./events/rideSubscriber");
 const { subscribe } = require("./events/subscriber");
+const driverRoutes = require("./routes/driverRoutes");
+const { startRejectionSubscriber } = require("./events/rejectionSubscriber");
+
 
 startRideSubscriber();
+startRejectionSubscriber();
 
 subscribe("ride_requested", (data) => {
   logger.info("New Ride Request:", data);
@@ -25,6 +29,7 @@ app.use(cors());
 app.use(express.json());
 app.use("/match", matchingRoutes);
 // app.use('/ride', startRideSubscriber);
+app.use("/driver", driverRoutes);
 const PORT = process.env.PORT || 4008;
 
 app.get("/health", async (req, res) => {
