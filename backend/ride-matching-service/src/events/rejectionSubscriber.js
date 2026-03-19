@@ -1,10 +1,11 @@
 const { subscribe } = require("./subscriber");
+const { assignNextDriver } = require("../matching/assignmentEngine");
 
-function handleRejection(data) {
+async function handleRejection(data) {
 
-  console.log("Driver rejected ride:", data);
+  console.log("Driver rejected:", data.driverId);
 
-  // NEXT STEP → assign next driver (we'll implement next)
+  await assignNextDriver(data.rideId);
 
 }
 

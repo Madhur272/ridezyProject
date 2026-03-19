@@ -2,6 +2,7 @@ const redis = require("../../../shared/redisClient");
 const { subscribe } = require("./subscriber");
 
 const { rankDrivers } = require("../matching/driverRanking");
+const { assignNextDriver } = require("../matching/assignmentEngine");
 const { assignDriver } = require("../matching/assignmentEngine");
 
 const pino = require("pino");
@@ -46,17 +47,21 @@ async function handleRideRequest(data) {
 
   logger.info("Ranked drivers:", ranked);
 
-  const bestDriver = ranked[0];
+  // Take top 5 drivers
+  const driverQueue = ranked.slice(0, 5);
 
-  if (!bestDriver) {
-    logger.info("No drivers available");
-    return;
-  }
+  // Save queue in Redis
+  await redis.set(
+    `ride_queue:${data.rideId}`,
+    JSON.stringify(driverQueue),
+    "EX",
+    60
+  );
 
-  // 4️⃣ Assign driver
-  await assignDriver(data.rideId, bestDriver);
+  // Assign first driver
+  await assignNextDriver(data.rideId);
 
-  logger.info("Driver assigned:", bestDriver);
+  // logger.info("Driver assigned:", bestDriver);
 
 }
 

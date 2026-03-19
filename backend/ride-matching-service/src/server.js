@@ -14,10 +14,12 @@ const { startRideSubscriber }  = require("./events/rideSubscriber");
 const { subscribe } = require("./events/subscriber");
 const driverRoutes = require("./routes/driverRoutes");
 const { startRejectionSubscriber } = require("./events/rejectionSubscriber");
+const { startAcceptSubscriber } = require("./events/acceptSubscriber");
 
 
 startRideSubscriber();
 startRejectionSubscriber();
+startAcceptSubscriber();
 
 subscribe("ride_requested", (data) => {
   logger.info("New Ride Request:", data);

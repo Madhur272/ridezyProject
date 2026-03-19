@@ -1,5 +1,66 @@
 const redis = require("../../../shared/redisClient");
 
+async function assignNextDriver(rideId) {
+
+  const queueData = await redis.get(`ride_queue:${rideId}`);
+
+  if (!queueData) {
+    console.log("No driver queue found");
+    return;
+  }
+
+  let queue = JSON.parse(queueData);
+
+  if (queue.length === 0) {
+    console.log("All drivers exhausted");
+    return;
+  }
+
+  const nextDriver = queue.shift();
+
+  // Update queue
+  await redis.set(`ride_queue:${rideId}`, JSON.stringify(queue));
+
+  // Save ride state
+  await redis.set(
+    `ride:${rideId}`,
+    JSON.stringify({
+      rideId,
+      driverId: nextDriver.driverId,
+      status: "WAITING"
+    }),
+    "EX",
+    30
+  );
+
+  // Notify driver
+  await redis.publish("driver_notifications", JSON.stringify({
+    rideId,
+    driverId: nextDriver.driverId
+  }));
+
+  console.log("Trying driver:", nextDriver.driverId);
+
+  // Timeout
+  setTimeout(async () => {
+
+    const ride = await redis.get(`ride:${rideId}`);
+    if (!ride) return;
+
+    const parsed = JSON.parse(ride);
+
+    if (parsed.status === "WAITING") {
+
+      console.log("Timeout → trying next driver");
+
+      await assignNextDriver(rideId);
+
+    }
+
+  }, 10000);
+
+}
+
 async function assignDriver(rideId, driver) {
 
   const payload = {
@@ -55,4 +116,4 @@ async function assignDriver(rideId, driver) {
   }, 10000); // 10 seconds
 }
 
-module.exports = { assignDriver };
+module.exports = { assignDriver, assignNextDriver };
