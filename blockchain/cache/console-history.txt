@@ -1,5 +1,10 @@
 .exit
 await registry.getUser(await signer.getAddress());
+await registry.registerUser(0);
+const [signer] = await ethers.getSigners();
+const registry = await ethers.getContractAt("UserRegistry", "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512");
+.exit
+await registry.getUser(await signer.getAddress());
 );await registry.registerUser(0
 const [signer] = await ethers.getSigners();
 const registry = await ethers.getContractAt("UserRegistry", "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512")
