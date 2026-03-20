@@ -1,4 +1,10 @@
 .exit
+await score.getScore("0x70997970C51812dc3A010C7d01b50e0d17dc79C8")
+await score.rewardDriver("0x70997970C51812dc3A010C7d01b50e0d17dc79C8", 5)
+await score.recordViolation("0x70997970C51812dc3A010C7d01b50e0d17dc79C8", 10)
+await score.registerDriver("0x70997970C51812dc3A010C7d01b50e0d17dc79C8")
+const score = await ethers.getContractAt("CredibilityScoring", "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9")
+.exit
 await escrow.raiseDispute(1)
 await escrow.completeRide(1)
 await escrow.createRide(1, "0x70997970C51812dc3A010C7d01b50e0d17dc79C8", {value: ethers.parseEther("0.01") })

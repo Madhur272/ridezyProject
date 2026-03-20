@@ -31,6 +31,13 @@ async function main() {
   await escrow.waitForDeployment();
 
   console.log("Escrow deployed:", escrow.target);
+
+  // Deploy Credibility Scoring 
+  const Score = await ethers.getContractFactory("CredibilityScoring");
+  const score = await Score.deploy();
+  await score.waitForDeployment();
+
+  console.log("CredibilityScoring deployed:", score.target);
 }
 
 main().catch((error) => {
