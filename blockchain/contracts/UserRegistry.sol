@@ -21,7 +21,6 @@ contract UserRegistry is Ownable {
     event UserVerified(address user);
     event UserRejected(address user);
 
-    constructor() Ownable(msg.sender) {}
 
     // Register user
     function registerUser(UserType _userType) external {

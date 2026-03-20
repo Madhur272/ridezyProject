@@ -1,48 +1,4 @@
 .exit
-await registry.getUser(await signer.getAddress());
-await registry.registerUser(0);
-const [signer] = await ethers.getSigners();
-const registry = await ethers.getContractAt("UserRegistry", "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512");
-.exit
-await registry.getUser(await signer.getAddress());
-);await registry.registerUser(0
-const [signer] = await ethers.getSigners();
-const registry = await ethers.getContractAt("UserRegistry", "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512")
-.exit
-const registry = await ethers.getContratAt("UserRegistry", "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512")
-.exit
-await registry.getUser(await signer.getAddress());
-await registry.registerUser(0);
-const registry = await ethers.getContractAt("UserRegistry", "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512")
-.exit
-await registry.getUser("0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266")
-await registry.registerUser(0)
-const registry = await ethers.getContractAt("UserRegistry", "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266")
-.exit
-await registry.getUser("0x526525cda20794606c2985d36f61f4c85b8490c8eb4183877fd968a1757a79ee")
-await registry.getUser(" 0x526525cda20794606c2985d36f61f4c85b8490c8eb4183877fd968a1757a79ee")
-await registry.getUser("0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266")
-await registry.registerUser(0) 
-registry = await ethers.getContractAt("UserRegistry", "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266")
-const registry = await ethers.getContractAt("UserRegistry", "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266")
-const registry = await registry.getContractAt("UserRegistry", "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266")
-.exit
-await registry.getUser("0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266")
-await registry.registerUser(0)
-const registry = await ethers.getContractAt("UserRegistry", "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266")
-.exit
-await ethers.provider.getCode("0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266")
-await registry.getUser(myAddress);
-const myAddress = await signer.getAddress();
-const [signer] = await ethers.getSigners();
-await registry.getUser(0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266);
-await registry.getUser("0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266");
-await signer.getAddress();
-const [signer] = await ethers.getSigners();
-await registry.getUser("0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80")
-await registry.getUser("0x70997970C51812dc3A010C7d01b50e0d17dc79C8")
-await registry.getUser("0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266")
-await registry.registerUser(0)
-const registry = await ethers.getContractAt("UserRegistry", "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266")
-await registry.registerUser(0) // RIDER
-const registry = await ethers.getContractAt("UserRegistry", "PASTE_ADDRESS")
+await vehicle.getVehicle(0)
+await vehicle.registerVehicle("ipfs://vehicle-metadata-123")
+const vehicle = await ethers.getContractAt("VehicleNFT","0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0")

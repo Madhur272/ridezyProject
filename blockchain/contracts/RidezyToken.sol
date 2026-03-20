@@ -9,7 +9,6 @@ contract RidezyToken is ERC20, Ownable {
 
     constructor() 
         ERC20("Ridezy Token", "RZY") 
-        Ownable(msg.sender)   
     {
         _mint(msg.sender, 1_000_000 * 10 ** decimals());
     }
