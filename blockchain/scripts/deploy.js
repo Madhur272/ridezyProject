@@ -38,6 +38,13 @@ async function main() {
   await score.waitForDeployment();
 
   console.log("CredibilityScoring deployed:", score.target);
+
+  // Deploy Vehicle Wallet
+  const Wallet = await ethers.getContractFactory("VehicleWallet");
+  const wallet = await Wallet.deploy();
+  await wallet.waitForDeployment();
+
+  console.log("VehicleWallet deployed:", wallet.target);
 }
 
 main().catch((error) => {

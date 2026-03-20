@@ -1,4 +1,10 @@
 .exit
+await wallet.withdraw(1, ethers.parseEther("0.005"))
+await wallet.getBalance(1)
+await wallet.deposit(1, {value: ethers.parseEther("0.01") })
+await wallet.createWallet(1, "0x70997970C51812dc3A010C7d01b50e0d17dc79C8")
+const wallet = await ethers.getContractAt("VehicleWallet", "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707")
+.exit
 await score.getScore("0x70997970C51812dc3A010C7d01b50e0d17dc79C8")
 await score.rewardDriver("0x70997970C51812dc3A010C7d01b50e0d17dc79C8", 5)
 await score.recordViolation("0x70997970C51812dc3A010C7d01b50e0d17dc79C8", 10)

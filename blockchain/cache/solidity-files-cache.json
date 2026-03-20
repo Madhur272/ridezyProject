@@ -825,6 +825,44 @@
       "artifacts": [
         "CredibilityScoring"
       ]
+    },
+    "D:\\college\\MajorProject\\ridezyProject\\blockchain\\contracts\\VehicleWallet.sol": {
+      "lastModificationDate": 1774002280466,
+      "contentHash": "6df2cb6587954545342a04350ec81353",
+      "sourceName": "contracts/VehicleWallet.sol",
+      "solcConfig": {
+        "version": "0.8.24",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/access/Ownable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "VehicleWallet"
+      ]
     }
   }
 }
