@@ -1,4 +1,9 @@
 .exit
+await escrow.raiseDispute(1)
+await escrow.completeRide(1)
+await escrow.createRide(1, "0x70997970C51812dc3A010C7d01b50e0d17dc79C8", {value: ethers.parseEther("0.01") })
+const escrow = await ethers.getContractAt("RidePaymentEscrow","0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9")
+.exit
 await vehicle.getVehicle(0)
 await vehicle.registerVehicle("ipfs://vehicle-metadata-123")
 const vehicle = await ethers.getContractAt("VehicleNFT","0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0")

@@ -69,40 +69,6 @@
       ],
       "artifacts": []
     },
-    "D:\\college\\MajorProject\\ridezyProject\\blockchain\\contracts\\RidePayment.sol": {
-      "lastModificationDate": 1773908771777,
-      "contentHash": "32107f1a053670e419af2a6353ba7555",
-      "sourceName": "contracts/RidePayment.sol",
-      "solcConfig": {
-        "version": "0.8.24",
-        "settings": {
-          "evmVersion": "paris",
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.20"
-      ],
-      "artifacts": []
-    },
     "D:\\college\\MajorProject\\ridezyProject\\blockchain\\contracts\\RidezyToken.sol": {
       "lastModificationDate": 1773994640607,
       "contentHash": "233e61cbf61f6fb1e8ba6ac9a019a333",
@@ -817,6 +783,44 @@
         "^0.8.20"
       ],
       "artifacts": []
+    },
+    "D:\\college\\MajorProject\\ridezyProject\\blockchain\\contracts\\RidePaymentEscrow.sol": {
+      "lastModificationDate": 1774000996393,
+      "contentHash": "b30e2dafbc9e51ac1c5059240a39744e",
+      "sourceName": "contracts/RidePaymentEscrow.sol",
+      "solcConfig": {
+        "version": "0.8.24",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/access/Ownable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "RidePaymentEscrow"
+      ]
     }
   }
 }

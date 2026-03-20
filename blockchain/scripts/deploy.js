@@ -19,11 +19,18 @@ async function main() {
   console.log("UserRegistry deployed:", registry.target);
 
   // Deploy VehicleNFT
-    const Vehicle = await ethers.getContractFactory("VehicleNFT");
-    const vehicle = await Vehicle.deploy();
-    await vehicle.waitForDeployment();
+  const Vehicle = await ethers.getContractFactory("VehicleNFT");
+  const vehicle = await Vehicle.deploy();
+  await vehicle.waitForDeployment();
 
-    console.log("VehicleNFT deployed:", vehicle.target);
+  console.log("VehicleNFT deployed:", vehicle.target);
+
+  // Deploy Ride Payment Escrow
+  const Escrow = await ethers.getContractFactory("RidePaymentEscrow");
+  const escrow = await Escrow.deploy();
+  await escrow.waitForDeployment();
+
+  console.log("Escrow deployed:", escrow.target);
 }
 
 main().catch((error) => {
