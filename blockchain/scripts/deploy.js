@@ -45,6 +45,13 @@ async function main() {
   await wallet.waitForDeployment();
 
   console.log("VehicleWallet deployed:", wallet.target);
+
+  // Deploy DAO Governance
+  const DAO = await ethers.getContractFactory("DAOGovernance");
+  const dao = await DAO.deploy();
+  await dao.waitForDeployment();
+
+  console.log("DAO deployed:", dao.target);
 }
 
 main().catch((error) => {

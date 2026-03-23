@@ -1,40 +1,6 @@
 {
   "_format": "hh-sol-cache-2",
   "files": {
-    "D:\\college\\MajorProject\\ridezyProject\\blockchain\\contracts\\RideContact.sol": {
-      "lastModificationDate": 1773908768005,
-      "contentHash": "32107f1a053670e419af2a6353ba7555",
-      "sourceName": "contracts/RideContact.sol",
-      "solcConfig": {
-        "version": "0.8.24",
-        "settings": {
-          "evmVersion": "paris",
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.20"
-      ],
-      "artifacts": []
-    },
     "D:\\college\\MajorProject\\ridezyProject\\blockchain\\contracts\\RidezyToken.sol": {
       "lastModificationDate": 1773994640607,
       "contentHash": "233e61cbf61f6fb1e8ba6ac9a019a333",
@@ -716,40 +682,6 @@
         "UserRegistry"
       ]
     },
-    "D:\\college\\MajorProject\\ridezyProject\\blockchain\\contracts\\WalletManager.sol": {
-      "lastModificationDate": 1773908776875,
-      "contentHash": "32107f1a053670e419af2a6353ba7555",
-      "sourceName": "contracts/WalletManager.sol",
-      "solcConfig": {
-        "version": "0.8.24",
-        "settings": {
-          "evmVersion": "paris",
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.20"
-      ],
-      "artifacts": []
-    },
     "D:\\college\\MajorProject\\ridezyProject\\blockchain\\contracts\\RidePaymentEscrow.sol": {
       "lastModificationDate": 1774000996393,
       "contentHash": "b30e2dafbc9e51ac1c5059240a39744e",
@@ -862,6 +794,44 @@
       ],
       "artifacts": [
         "VehicleWallet"
+      ]
+    },
+    "D:\\college\\MajorProject\\ridezyProject\\blockchain\\contracts\\DAOGovernance.sol": {
+      "lastModificationDate": 1774002714334,
+      "contentHash": "384ac24232125c68d82c4f4fb3a5b2c0",
+      "sourceName": "contracts/DAOGovernance.sol",
+      "solcConfig": {
+        "version": "0.8.24",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/access/Ownable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "DAOGovernance"
       ]
     }
   }

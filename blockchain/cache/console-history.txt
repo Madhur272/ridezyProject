@@ -1,4 +1,12 @@
 .exit
+await dao.executeProposal(0)
+await network.provider.send("evm_mine")
+await network.provider.send("evm_increaseTime", [7 * 24 * 60 * 60])
+await dao.executeProposal(0)
+await dao.vote(0,true)
+await dao.createProposal("Reduce platform fee to 1%")
+const dao = await ethers.getContractAt("DAOGovernance", "0x0165878A594ca255338adfa4d48449f69242Eb8F")
+.exit
 await wallet.withdraw(1, ethers.parseEther("0.005"))
 await wallet.getBalance(1)
 await wallet.deposit(1, {value: ethers.parseEther("0.01") })
