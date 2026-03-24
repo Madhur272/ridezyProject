@@ -6,16 +6,17 @@ const connectDB = require("./config/db");
 const Ride = require("./models/Ride");
 const Users = require("./models/Users");
 const Vehicle = require("./models/Vehicle");
-
+const blockchain = require("./routes/blockchainRouter");
 const app = express();
 
+
+app.use(cors());
+app.use(express.json());
 connectDB();
 Ride(); 
 Users();  
 Vehicle(); 
-
-app.use(cors());
-app.use(express.json());
+app.use("/auth", blockchain);
 
 const PORT = process.env.PORT || 4001;
 

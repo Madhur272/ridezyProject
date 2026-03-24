@@ -1,4 +1,17 @@
 .exit
+await registry.getUser(signer.address);
+const [signer] = await ethers.getSigners();
+const registry = await Registry.attach(address);
+const Registry = await ethers.getContractFactory("UserRegistry");
+const address = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512";
+await registry.getUser("0xe7f1725e7734ce288f8367e1bb143e90bb3f0512")
+await registry.getUser("0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512")
+await registry.getUser("0x0fdb19b78eabf16f08cdadd0c23974b58855f300e7ad4b450b1915d4546ffaa6")
+await registry.getUser("0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266")
+.exit
+await registry.getUser("0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512")
+await registry.getUser("0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266")
+.exit
 await dao.executeProposal(0)
 await network.provider.send("evm_mine")
 await network.provider.send("evm_increaseTime", [7 * 24 * 60 * 60])
