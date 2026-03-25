@@ -72,5 +72,10 @@ const vehicleWallet = new ethers.Contract(
 
 module.exports = {
   userRegistry,
-  escrow
+  escrow, 
+  credibility,
+  dao,
+  ridezyToken,
+  vehicleNFT,
+  vehicleWallet
 };

@@ -14,15 +14,15 @@ contract RidePaymentEscrow is Ownable {
         RideStatus status;
     }
 
-    mapping(uint256 => Ride) public rides;
+    mapping(string => Ride) public rides;
 
-    event RideCreated(uint256 rideId, address rider, uint256 amount);
-    event RideCompleted(uint256 rideId, address driver);
-    event RideDisputed(uint256 rideId);
-    event RideCancelled(uint256 rideId);
+    event RideCreated(string rideId, address rider, uint256 amount);
+    event RideCompleted(string rideId, address driver);
+    event RideDisputed(string rideId);
+    event RideCancelled(string rideId);
 
     // Rider locks payment
-    function createRide(uint256 rideId, address driver) external payable {
+    function createRide(string memory rideId, address driver) external payable {
 
         require(rides[rideId].rider == address(0), "Ride exists");
         require(msg.value > 0, "Payment required");
@@ -38,7 +38,7 @@ contract RidePaymentEscrow is Ownable {
     }
 
     // Complete ride → release payment
-    function completeRide(uint256 rideId) external {
+    function completeRide(string memory rideId) external {
 
         Ride storage ride = rides[rideId];
 
@@ -53,7 +53,7 @@ contract RidePaymentEscrow is Ownable {
     }
 
     // Raise dispute
-    function raiseDispute(uint256 rideId) external {
+    function raiseDispute(string memory rideId) external {
 
         Ride storage ride = rides[rideId];
 
@@ -68,7 +68,7 @@ contract RidePaymentEscrow is Ownable {
     }
 
     // Admin resolves dispute
-    function resolveDispute(uint256 rideId, bool payDriver) external onlyOwner {
+    function resolveDispute(string memory rideId, bool payDriver) external onlyOwner {
 
         Ride storage ride = rides[rideId];
 
@@ -83,8 +83,8 @@ contract RidePaymentEscrow is Ownable {
         ride.status = RideStatus.COMPLETED;
     }
 
-    // Cancel ride (before start)
-    function cancelRide(uint256 rideId) external {
+    // Cancel ride
+    function cancelRide(string memory rideId) external {
 
         Ride storage ride = rides[rideId];
 

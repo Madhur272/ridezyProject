@@ -683,8 +683,8 @@
       ]
     },
     "D:\\college\\MajorProject\\ridezyProject\\blockchain\\contracts\\RidePaymentEscrow.sol": {
-      "lastModificationDate": 1774000996393,
-      "contentHash": "b30e2dafbc9e51ac1c5059240a39744e",
+      "lastModificationDate": 1774364217101,
+      "contentHash": "ad78b52dc38f6fb1a629fc76abf844fe",
       "sourceName": "contracts/RidePaymentEscrow.sol",
       "solcConfig": {
         "version": "0.8.24",
