@@ -1,4 +1,6 @@
 .exit
+await escrow.rides(ride555)
+.exit
 await registry.getUser(signer.address);
 const [signer] = await ethers.getSigners();
 const registry = await Registry.attach(address);
