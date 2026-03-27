@@ -1,0 +1,10 @@
+path: datasets/traffic_dataset
+
+train: images/train
+val: images/val
+
+nc: 2
+
+names:
+  0: stop
+  1: speed_limit
