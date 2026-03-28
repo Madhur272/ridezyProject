@@ -24,4 +24,27 @@ async function reportViolation(req, res) {
   }
 }
 
-module.exports = { reportViolation };
+async function reportBatchViolation(req, res) {
+
+  try {
+
+    const { violations } = req.body;
+
+    for (const v of violations) {
+
+      await recordViolation(v.driver, v.penalty);
+
+    }
+
+    res.json({ message: "Batch processed" });
+
+  } catch (err) {
+
+    console.error(err);
+
+    res.status(500).json({ error: "Batch failed" });
+
+  }
+}
+
+module.exports = { reportViolation, reportBatchViolation };

@@ -1,6 +1,12 @@
 import cv2
 import numpy as np
 import requests
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from core.violation_engine import ViolationEngine
+import threading
+import time
 
 def region_of_interest(img):
 
@@ -89,8 +95,11 @@ def detect_lane_violation(lines, frame_width):
     return False
 
 def main():
-
+    engine = ViolationEngine()
+    threading.Thread(target=engine.run, daemon=True).start()
     cap = cv2.VideoCapture("../videos/test_video.mp4")
+    last_violation_time = 0
+    cooldown = 2  # seconds
 
     while cap.isOpened():
 
@@ -108,18 +117,23 @@ def main():
 
         violation = detect_lane_violation(lines, frame.shape[1])
         if violation:
-            cv2.putText(output, "LANE VIOLATION!", (50,50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,255), 3)
-            print("Violation detected!")
-            try:
-                requests.post(
-                    "http://localhost:4007/violation/report",
-                    json={
-                        "driverAddress": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
-                        "penalty": 5
-                    }
-                )
-            except:
-                print("Failed to send violation")
+            current_time = time.time()
+            if current_time - last_violation_time > cooldown:
+                cv2.putText(output, "LANE VIOLATION!", (50,50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,255), 3)
+                print("Violation detected!")
+                try:
+                    # requests.post(
+                    #     "http://localhost:4007/violation/report",
+                    #     json={
+                    #         "driverAddress": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+                    #         "penalty": 5
+                    #     }
+                    # )
+                    engine.add_violation("0x70997970C51812dc3A010C7d01b50e0d17dc79C8", "lane", 5)
+                    last_violation_time = current_time
+                except:
+                    print("Failed to send violation")
+                
 
         cv2.imshow("Lane Detection", output)
 
@@ -131,4 +145,7 @@ def main():
     cv2.destroyAllWindows()
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("Stopping...")
