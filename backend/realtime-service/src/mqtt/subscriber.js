@@ -1,6 +1,7 @@
 const mqtt = require("mqtt");
 const { writeApi, Point } = require("../db/influx");
 const axios = require("axios");
+const { getIO } = require("../socket/socket");
 
 const {
   addVehicleData,
@@ -22,7 +23,12 @@ client.on("message", async (topic, message) => {
 
   addVehicleData(data);
 
-  // 1️⃣ Store in InfluxDB
+  // EMIT REAL-TIME UPDATE HERE
+  const io = getIO();
+  if (io) {
+    io.emit("vehicle_update", data);
+  }
+  // Store in InfluxDB
   const point = new Point("vehicle_metrics")
     .tag("driverId", data.driverId)
     .floatField("speed", data.speed)
@@ -32,7 +38,7 @@ client.on("message", async (topic, message) => {
 
   writeApi.writePoint(point);
 
-  // 2️⃣ Detect violations
+  // Detect violations
   await processViolations(data);
 
 });

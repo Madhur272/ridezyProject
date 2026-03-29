@@ -13,7 +13,7 @@ function App() {
       <div style={{ display: "flex", gap: "20px" }}>
 
         <div style={{ flex: 1 }}>
-          <Dashboard setVehicles={setVehicles} />
+          <Dashboard vehicles={vehicles} setVehicles={setVehicles} />
         </div>
 
         <div style={{ flex: 1 }}>

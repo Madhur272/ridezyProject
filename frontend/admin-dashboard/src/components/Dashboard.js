@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getVehicleData } from "../services/api";
+import { io } from "socket.io-client";
 
 function Dashboard() {
 
@@ -7,18 +8,28 @@ function Dashboard() {
 
   useEffect(() => {
 
-    const fetchData = async () => {
+    const socket = io("http://localhost:4011");
 
-      const res = await getVehicleData();
+    socket.on("vehicle_update", (data) => {
 
-      setVehicles(res.data); // ✅ important
-    };
+      setVehicles(prev => {
 
-    fetchData();
+        const updated = [...prev];
 
-    const interval = setInterval(fetchData, 3000);
+        const index = updated.findIndex(v => v.driverId === data.driverId);
 
-    return () => clearInterval(interval);
+        if (index !== -1) {
+          updated[index] = data;
+        } else {
+          updated.push(data);
+        }
+
+        return updated;
+      });
+
+    });
+
+    return () => socket.disconnect();
 
   }, []);
 
