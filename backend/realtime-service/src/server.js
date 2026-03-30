@@ -5,6 +5,7 @@ const http = require("http");
 
 const app = express();
 const dashboardRoutes = require("./routes/dashboardRoutes");
+const driverRoutes = require("./routes/driverRoutes");
 
 // Middleware
 app.use(cors());
@@ -15,6 +16,7 @@ require("./mqtt/subscriber");
 
 // Routes
 app.use("/", dashboardRoutes);
+app.use("/", driverRoutes);
 
 // Health check
 app.get("/health", (req, res) => {
