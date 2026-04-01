@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'screens/rider_home.dart';
+import 'screens/role_selector.dart';
 
 void main() {
   runApp(MyApp());
@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: RiderHome(),
+      home: RoleSelector(),
     );
 
   }

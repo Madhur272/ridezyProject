@@ -6,6 +6,7 @@ const http = require("http");
 const app = express();
 const dashboardRoutes = require("./routes/dashboardRoutes");
 const driverRoutes = require("./routes/driverRoutes");
+const { startDriverSubscriber } = require("./events/driverSubscriber");
 
 // Middleware
 app.use(cors());
@@ -31,7 +32,9 @@ const server = http.createServer(app);
 
 // Attach WebSocket
 const { initSocket } = require("./socket/socket");
+
 initSocket(server);
+startDriverSubscriber();
 
 // Use server.listen instead of app.listen
 const PORT = process.env.PORT || 4011;
