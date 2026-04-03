@@ -7,7 +7,7 @@ client = mqtt.Client()
 
 client.connect("localhost", 1883, 60)
 
-driver_id = "driver123"
+driver_id = "driver1"
 
 def generate_data():
 

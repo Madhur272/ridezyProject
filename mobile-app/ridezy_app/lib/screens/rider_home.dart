@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import '../services/api_service.dart';
+import 'rider_map.dart';
 
 class RiderHome extends StatelessWidget {
 
-  void bookRide() async {
+  void bookRide(BuildContext context) async {
 
     final res = await ApiService.createRide({
       "rideId": "ride_${DateTime.now().millisecondsSinceEpoch}",
@@ -15,7 +16,12 @@ class RiderHome extends StatelessWidget {
     });
 
     print(res);
-  }
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => RiderMap()),
+    );
+}
 
   @override
   Widget build(BuildContext context) {
@@ -24,10 +30,14 @@ class RiderHome extends StatelessWidget {
       appBar: AppBar(title: Text("Ridezy Rider")),
       body: Center(
         child: ElevatedButton(
-          onPressed: bookRide,
+          onPressed: () => bookRide(context),
           child: Text("Book Ride"),
         ),
       ),
     );
   }
 }
+
+
+
+// influx db, redis cli, mqtt
