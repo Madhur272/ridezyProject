@@ -2,13 +2,14 @@ const mqtt = require("mqtt");
 const { writeApi, Point } = require("../db/influx");
 const axios = require("axios");
 const { getIO } = require("../socket/socket");
+require("dotenv").config();
 
 const {
   addVehicleData,
   addViolation
 } = require("../store/dataStore");
 
-const client = mqtt.connect("mqtt://localhost:1883");
+const client = mqtt.connect(process.env.MQTT_URL);
 
 client.on("connect", () => {
   console.log("Connected to MQTT broker");

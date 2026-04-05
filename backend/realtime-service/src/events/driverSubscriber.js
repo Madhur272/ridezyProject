@@ -1,7 +1,11 @@
 const Redis = require("ioredis");
 const { getIO } = require("../socket/socket");
+require("dotenv").config();
 
-const sub = new Redis();
+const sub = new Redis({
+  host: process.env.REDIS_HOST,
+  port: process.env.REDIS_PORT,
+});
 
 function startDriverSubscriber() {
   

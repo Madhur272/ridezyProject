@@ -1,4 +1,4 @@
-const redis = require("../../../shared/redisClient");
+const redis = require("../config/redis");
 
 async function publishEvent(channel, payload) {
 

@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
-const redis = require("../../shared/redisClient");
+const redis = require("./config/redis");
 
 const locationRoutes = require("./routes/locationRoutes");
 const { subscribe } = require("./events/subscriber");

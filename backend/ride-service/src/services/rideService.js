@@ -1,4 +1,4 @@
-const { escrow } = require("../../../shared/web3/contracts");
+const { escrow } = require("../../shared/web3/contracts");
 
 async function createRideOnChain(rideId, driverAddress, amount) {
 

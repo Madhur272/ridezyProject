@@ -1,6 +1,6 @@
 // Driver Location Update Service
 
-const redis = require("../../../shared/redisClient");
+const redis = require("../config/redis");
 
 async function updateDriverLocation(driverId, lat, lng) {
 

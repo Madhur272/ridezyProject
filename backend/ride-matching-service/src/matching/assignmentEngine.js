@@ -1,4 +1,4 @@
-const redis = require("../../../shared/redisClient");
+const redis = require("../config/redis");
 const axios = require("axios");
 
 async function assignNextDriver(rideId) {
@@ -39,7 +39,7 @@ async function assignNextDriver(rideId) {
     rideId,
     driverId: nextDriver.driverId
   }));
-    await axios.post("http://192.168.1.13:4011/notify-driver", {
+    await axios.post("http://realtime-service:4011/notify-driver", {
     rideId,
     driverId: nextDriver.driverId
   });
@@ -90,7 +90,7 @@ async function assignDriver(rideId, driver) {
     "driver_notifications",
     JSON.stringify(payload)
   );
-  await axios.post("http://192.168.1.13:4011/notify-driver", payload);
+  await axios.post("http://realtime-service:4011/notify-driver", payload);
 
   console.log("Driver notified", payload);
 

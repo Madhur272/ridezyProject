@@ -1,8 +1,8 @@
-const { credibility } = require("../../../shared/web3/contracts");
+const { contracts } = require("../../shared/web3/contracts");
 
 async function recordViolation(driverAddress, penalty) {
 
-  const tx = await credibility.recordViolation(driverAddress, penalty);
+  const tx = await contracts.credibility.recordViolation(driverAddress, penalty);
 
   await tx.wait();
 

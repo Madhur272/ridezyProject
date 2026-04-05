@@ -1,0 +1,68 @@
+version: "3.8"
+
+services:
+
+  # ---------------- DATABASES ----------------
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+
+  influxdb:
+    image: influxdb:2.7
+    ports:
+      - "8086:8086"
+
+  mqtt:
+    image: eclipse-mosquitto
+    ports:
+      - "1883:1883"
+
+  # ---------------- BACKEND SERVICES ----------------
+
+  blockchain:
+    build: ./blockchain
+    command: npx hardhat node
+    ports:
+      - "8545:8545"
+
+  ride-service:
+    build: ./backend/ride-service
+    ports:
+      - "4009:4009"
+    depends_on:
+      - mongo
+      - redis
+
+  ride-matching-service:
+    build: ./backend/ride-matching-service
+    ports:
+      - "4008:4008"
+    depends_on:
+      - redis
+
+  reputation-service:
+    build: ./backend/reputation-service
+    ports:
+      - "4007:4007"
+    depends_on:
+      - mongo
+
+  realtime-service:
+    build: ./backend/realtime-service
+    ports:
+      - "4011:4011"
+    depends_on:
+      - mqtt
+      - influxdb
+      
+  deploy:
+    build: ./blockchain
+    command: npx hardhat run scripts/deploy.js --network blockchain
+    depends_on:
+      - blockchain

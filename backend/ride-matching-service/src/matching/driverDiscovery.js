@@ -1,4 +1,4 @@
-const redis = require("../../../shared/redisClient");
+const redis = require("../conifg/redis");
 
 async function getActiveDrivers() {
 

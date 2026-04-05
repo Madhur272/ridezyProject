@@ -1,8 +1,8 @@
-const { credibility } = require("../../../shared/web3/contracts");
+const { contracts } = require("../../shared/web3/contracts");
 
 async function rewardDriver(driverAddress) {
 
-  const tx = await credibility.rewardDriver(driverAddress, 5);
+  const tx = await contracts.credibility.rewardDriver(driverAddress, 5);
 
   await tx.wait();
 
