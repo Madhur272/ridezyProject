@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payment-service
+  labels:
+    app: payment-service
+    tier: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: payment-service
+  template:
+    metadata:
+      labels:
+        app: payment-service
+        tier: backend
+    spec:
+      containers:
+        - name: payment-service
+          image: ridezyproject-payment-service:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 4004
+              name: http
+          envFrom:
+            - configMapRef:
+                name: ridezy-config
+            - secretRef:
+                name: ridezy-dev-secrets
+          env:
+            - name: PORT
+              value: "4004"
+            - name: SERVICE_NAME
+              value: payment-service
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 4004
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: 4004
+            initialDelaySeconds: 30
+            periodSeconds: 20
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "300m"

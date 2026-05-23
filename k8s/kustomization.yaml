@@ -1,0 +1,39 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: ridezy
+resources:
+  - namespace.yaml
+  - ridezy-config.yaml
+  - ridezy-dev-secrets.yaml
+  - mongo-deployment.yaml
+  - mongo-service.yaml
+  - redis-deployment.yaml
+  - redis-service.yaml
+  - influxdb-deployment.yaml
+  - influxdb-service.yaml
+  - mqtt-deployment.yaml
+  - mqtt-service.yaml
+  - blockchain-node-deployment.yaml
+  - blockchain-node-service.yaml
+  - api-gateway-deployment.yaml
+  - api-gateway-service.yaml
+  - auth-service-deployment.yaml
+  - auth-service-service.yaml
+  - blockchain-service-deployment.yaml
+  - blockchain-service-service.yaml
+  - vehicle-service-deployment.yaml
+  - vehicle-service-service.yaml
+  - payment-service-deployment.yaml
+  - payment-service-service.yaml
+  - reputation-service-deployment.yaml
+  - reputation-service-service.yaml
+  - ride-matching-service-deployment.yaml
+  - ride-matching-service-service.yaml
+  - ride-service-deployment.yaml
+  - ride-service-service.yaml
+  - analytics-service-deployment.yaml
+  - analytics-service-service.yaml
+  - realtime-service-deployment.yaml
+  - realtime-service-service.yaml
+  - iot-service-deployment.yaml
+  - iot-service-service.yaml

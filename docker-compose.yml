@@ -1,68 +1,239 @@
-version: "3.8"
+x-backend-build: &backend-build
+  context: ./backend
+  dockerfile: Dockerfile.service
+
+x-backend-env: &backend-env
+  NODE_ENV: production
+  MONGO_URI: mongodb://mongo:27017/ridezy
+  REDIS_HOST: redis
+  REDIS_PORT: "6379"
+  BLOCKCHAIN_RPC_URL: http://blockchain:8545
+  MQTT_URL: mqtt://mqtt:1883
+  INFLUX_URL: http://influxdb:8086
+  INFLUX_ORG: ridezy
+  INFLUX_BUCKET: vehicle_data
+  INFLUX_TOKEN: ridezy-local-dev-token
+  REPUTATION_SERVICE_URL: http://reputation-service:4007
+  PRIVATE_KEY: "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80"
 
 services:
-
-  # ---------------- DATABASES ----------------
   mongo:
-    image: mongo
+    image: mongo:7
     ports:
       - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
 
   redis:
-    image: redis
+    image: redis:7-alpine
+    command: ["redis-server", "--appendonly", "yes"]
     ports:
       - "6379:6379"
+    volumes:
+      - redis-data:/data
 
   influxdb:
     image: influxdb:2.7
     ports:
       - "8086:8086"
+    environment:
+      DOCKER_INFLUXDB_INIT_MODE: setup
+      DOCKER_INFLUXDB_INIT_USERNAME: ridezy
+      DOCKER_INFLUXDB_INIT_PASSWORD: ridezy-password
+      DOCKER_INFLUXDB_INIT_ORG: ridezy
+      DOCKER_INFLUXDB_INIT_BUCKET: vehicle_data
+      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: ridezy-local-dev-token
+    volumes:
+      - influxdb-data:/var/lib/influxdb2
 
   mqtt:
-    image: eclipse-mosquitto
+    image: eclipse-mosquitto:2
     ports:
       - "1883:1883"
-
-  # ---------------- BACKEND SERVICES ----------------
+    volumes:
+      - ./infrastructure/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
 
   blockchain:
     build: ./blockchain
-    command: npx hardhat node
     ports:
       - "8545:8545"
 
-  ride-service:
-    build: ./backend/ride-service
+  api-gateway:
+    build:
+      <<: *backend-build
+      args:
+        SERVICE_NAME: api-gateway
+    environment:
+      <<: *backend-env
+      PORT: "4000"
+      SERVICE_NAME: api-gateway
+      AUTH_SERVICE_URL: http://auth-service:4001/auth
+      RIDE_SERVICE_URL: http://ride-service:4009/ride
+      LOCATION_SERVICE_URL: http://ride-service:4009/location
+      MATCHING_SERVICE_URL: http://ride-matching-service:4008/match
+      DRIVER_MATCHING_SERVICE_URL: http://ride-matching-service:4008/driver
+      REALTIME_SERVICE_URL: http://realtime-service:4011
+      PAYMENT_SERVICE_URL: http://payment-service:4004
+      VEHICLE_SERVICE_URL: http://vehicle-service:4003
+      IOT_SERVICE_URL: http://iot-service:4012
+      ANALYTICS_SERVICE_URL: http://analytics-service:4010
+      BLOCKCHAIN_SERVICE_URL: http://blockchain-service:4002
     ports:
-      - "4009:4009"
+      - "4000:4000"
+    depends_on:
+      - auth-service
+      - ride-service
+      - ride-matching-service
+      - realtime-service
+
+  auth-service:
+    build:
+      <<: *backend-build
+      args:
+        SERVICE_NAME: auth-service
+    environment:
+      <<: *backend-env
+      PORT: "4001"
+      SERVICE_NAME: auth-service
+    ports:
+      - "4001:4001"
     depends_on:
       - mongo
-      - redis
+      - blockchain
+
+  blockchain-service:
+    build:
+      <<: *backend-build
+      args:
+        SERVICE_NAME: blockchain-service
+    environment:
+      <<: *backend-env
+      PORT: "4002"
+      SERVICE_NAME: blockchain-service
+    ports:
+      - "4002:4002"
+    depends_on:
+      - blockchain
+
+  vehicle-service:
+    build:
+      <<: *backend-build
+      args:
+        SERVICE_NAME: vehicle-service
+    environment:
+      <<: *backend-env
+      PORT: "4003"
+      SERVICE_NAME: vehicle-service
+    ports:
+      - "4003:4003"
+    depends_on:
+      - mongo
+
+  payment-service:
+    build:
+      <<: *backend-build
+      args:
+        SERVICE_NAME: payment-service
+    environment:
+      <<: *backend-env
+      PORT: "4004"
+      SERVICE_NAME: payment-service
+    ports:
+      - "4004:4004"
+    depends_on:
+      - mongo
+      - blockchain
+
+  reputation-service:
+    build:
+      <<: *backend-build
+      args:
+        SERVICE_NAME: reputation-service
+    environment:
+      <<: *backend-env
+      PORT: "4007"
+      SERVICE_NAME: reputation-service
+    ports:
+      - "4007:4007"
+    depends_on:
+      - mongo
+      - blockchain
 
   ride-matching-service:
-    build: ./backend/ride-matching-service
+    build:
+      <<: *backend-build
+      args:
+        SERVICE_NAME: ride-matching-service
+    environment:
+      <<: *backend-env
+      PORT: "4008"
+      SERVICE_NAME: ride-matching-service
     ports:
       - "4008:4008"
     depends_on:
       - redis
 
-  reputation-service:
-    build: ./backend/reputation-service
+  ride-service:
+    build:
+      <<: *backend-build
+      args:
+        SERVICE_NAME: ride-service
+    environment:
+      <<: *backend-env
+      PORT: "4009"
+      SERVICE_NAME: ride-service
     ports:
-      - "4007:4007"
+      - "4009:4009"
+    depends_on:
+      - mongo
+      - redis
+      - blockchain
+
+  analytics-service:
+    build:
+      <<: *backend-build
+      args:
+        SERVICE_NAME: analytics-service
+    environment:
+      <<: *backend-env
+      PORT: "4010"
+      SERVICE_NAME: analytics-service
+    ports:
+      - "4010:4010"
     depends_on:
       - mongo
 
   realtime-service:
-    build: ./backend/realtime-service
+    build:
+      <<: *backend-build
+      args:
+        SERVICE_NAME: realtime-service
+    environment:
+      <<: *backend-env
+      PORT: "4011"
+      SERVICE_NAME: realtime-service
     ports:
       - "4011:4011"
     depends_on:
+      - redis
       - mqtt
       - influxdb
-      
-  deploy:
-    build: ./blockchain
-    command: npx hardhat run scripts/deploy.js --network blockchain
+
+  iot-service:
+    build:
+      <<: *backend-build
+      args:
+        SERVICE_NAME: iot-service
+    environment:
+      <<: *backend-env
+      PORT: "4012"
+      SERVICE_NAME: iot-service
+    ports:
+      - "4012:4012"
     depends_on:
-      - blockchain
+      - mqtt
+
+volumes:
+  mongo-data:
+  redis-data:
+  influxdb-data:

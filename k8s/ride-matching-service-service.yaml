@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ride-matching-service
+  labels:
+    app: ride-matching-service
+spec:
+  selector:
+    app: ride-matching-service
+  ports:
+    - name: http
+      port: 4008
+      targetPort: 4008
+  type: ClusterIP

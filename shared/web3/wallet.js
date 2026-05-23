@@ -13,8 +13,4 @@ const provider = require("./provider");
 
 const PRIVATE_KEY = process.env.PRIVATE_KEY;
 
-const baseWallet = new ethers.Wallet(PRIVATE_KEY, provider);
-
-const wallet = new ethers.NonceManager(baseWallet);
-
-module.exports = wallet;
+module.exports = new ethers.Wallet(PRIVATE_KEY, provider);

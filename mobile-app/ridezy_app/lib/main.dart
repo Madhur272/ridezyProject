@@ -1,19 +1,41 @@
+// import 'package:flutter/material.dart';
+// import 'screens/role_selector.dart';
+
+// void main() {
+//   runApp(MyApp());
+// }
+
+// class MyApp extends StatelessWidget {
+
+//   @override
+//   Widget build(BuildContext context) {
+
+//     return MaterialApp(
+//       debugShowCheckedModeBanner: false,
+//       home: RoleSelector(),
+//     );
+
+//   }
+// }
+
 import 'package:flutter/material.dart';
-import 'screens/role_selector.dart';
+import 'core/theme/app_theme.dart';
+import 'screens/splash/splash_screen.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const RidezyApp());
 }
 
-class MyApp extends StatelessWidget {
+class RidezyApp extends StatelessWidget {
+  const RidezyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: RoleSelector(),
+      title: 'Ridezy',
+      theme: AppTheme.darkTheme,
+      home: const SplashScreen(),
     );
-
   }
 }

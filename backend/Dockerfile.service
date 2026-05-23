@@ -1,0 +1,17 @@
+FROM node:20-alpine
+
+ARG SERVICE_NAME
+ENV NODE_ENV=production
+ENV NODE_PATH=/app/backend/${SERVICE_NAME}/node_modules
+
+RUN test -n "$SERVICE_NAME"
+
+WORKDIR /app/backend/${SERVICE_NAME}
+
+COPY ${SERVICE_NAME}/package*.json ./
+RUN npm ci --omit=dev || npm install --omit=dev
+
+COPY ${SERVICE_NAME}/ ./
+COPY shared /app/backend/shared
+
+CMD ["npm", "start"]

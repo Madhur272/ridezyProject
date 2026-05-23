@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: reputation-service
+  labels:
+    app: reputation-service
+spec:
+  selector:
+    app: reputation-service
+  ports:
+    - name: http
+      port: 4007
+      targetPort: 4007
+  type: ClusterIP

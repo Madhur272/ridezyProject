@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: realtime-service
+  labels:
+    app: realtime-service
+    tier: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: realtime-service
+  template:
+    metadata:
+      labels:
+        app: realtime-service
+        tier: backend
+    spec:
+      containers:
+        - name: realtime-service
+          image: ridezyproject-realtime-service:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 4011
+              name: http
+          envFrom:
+            - configMapRef:
+                name: ridezy-config
+            - secretRef:
+                name: ridezy-dev-secrets
+          env:
+            - name: PORT
+              value: "4011"
+            - name: SERVICE_NAME
+              value: realtime-service
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 4011
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: 4011
+            initialDelaySeconds: 30
+            periodSeconds: 20
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "384Mi"
+              cpu: "300m"

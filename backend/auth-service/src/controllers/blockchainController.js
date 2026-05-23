@@ -4,11 +4,14 @@ async function registerUser(req, res) {
 
   const { userType } = req.body;
 
-  const txHash = await registerUserOnChain(userType);
+  const result = await registerUserOnChain(userType);
 
   res.json({
-    message: "User registered on blockchain",
-    txHash
+    message: result.status === "already_registered"
+      ? "User already registered on blockchain"
+      : "User registered on blockchain",
+    status: result.status,
+    txHash: result.txHash
   });
 }
 

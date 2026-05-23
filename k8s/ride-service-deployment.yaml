@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ride-service
+  labels:
+    app: ride-service
+    tier: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ride-service
+  template:
+    metadata:
+      labels:
+        app: ride-service
+        tier: backend
+    spec:
+      containers:
+        - name: ride-service
+          image: ridezyproject-ride-service:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 4009
+              name: http
+          envFrom:
+            - configMapRef:
+                name: ridezy-config
+            - secretRef:
+                name: ridezy-dev-secrets
+          env:
+            - name: PORT
+              value: "4009"
+            - name: SERVICE_NAME
+              value: ride-service
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 4009
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            failureThreshold: 6
+          livenessProbe:
+            tcpSocket:
+              port: 4009
+            initialDelaySeconds: 30
+            periodSeconds: 20
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "300m"

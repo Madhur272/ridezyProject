@@ -1,4 +1,14 @@
 const { escrow } = require("../../shared/web3/contracts");
+const wallet = require("../../shared/web3/wallet");
+
+async function freshNonce() {
+  const nonce = await wallet.provider.send("eth_getTransactionCount", [
+    wallet.address,
+    "pending"
+  ]);
+
+  return Number(BigInt(nonce));
+}
 
 async function createRideOnChain(rideId, driverAddress, amount) {
 
@@ -6,7 +16,8 @@ async function createRideOnChain(rideId, driverAddress, amount) {
     rideId,
     driverAddress,
     {
-      value: amount
+      value: amount,
+      nonce: await freshNonce()
     }
   );
 
@@ -19,7 +30,9 @@ async function createRideOnChain(rideId, driverAddress, amount) {
 
 async function completeRideOnChain(rideId) {
 
-  const tx = await escrow.completeRide(rideId);
+  const tx = await escrow.completeRide(rideId, {
+    nonce: await freshNonce()
+  });
 
   await tx.wait();
 

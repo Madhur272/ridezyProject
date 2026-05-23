@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ride-matching-service
+  labels:
+    app: ride-matching-service
+    tier: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ride-matching-service
+  template:
+    metadata:
+      labels:
+        app: ride-matching-service
+        tier: backend
+    spec:
+      containers:
+        - name: ride-matching-service
+          image: ridezyproject-ride-matching-service:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 4008
+              name: http
+          envFrom:
+            - configMapRef:
+                name: ridezy-config
+            - secretRef:
+                name: ridezy-dev-secrets
+          env:
+            - name: PORT
+              value: "4008"
+            - name: SERVICE_NAME
+              value: ride-matching-service
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 4008
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            failureThreshold: 6
+          livenessProbe:
+            tcpSocket:
+              port: 4008
+            initialDelaySeconds: 30
+            periodSeconds: 20
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "300m"

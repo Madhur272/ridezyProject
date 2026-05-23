@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: analytics-service
+  labels:
+    app: analytics-service
+spec:
+  selector:
+    app: analytics-service
+  ports:
+    - name: http
+      port: 4010
+      targetPort: 4010
+  type: ClusterIP

@@ -9,7 +9,10 @@ const {
   addViolation
 } = require("../store/dataStore");
 
-const client = mqtt.connect(process.env.MQTT_URL);
+const mqttUrl = process.env.MQTT_URL || "mqtt://127.0.0.1:1883";
+const reputationServiceUrl = process.env.REPUTATION_SERVICE_URL || "http://reputation-service:4007";
+
+const client = mqtt.connect(mqttUrl);
 
 client.on("connect", () => {
   console.log("Connected to MQTT broker");
@@ -59,9 +62,11 @@ async function processViolations(data) {
 
     addViolation(violation)
 
-    await axios.post("http://localhost:4007/violation/report", {
+    await axios.post(`${reputationServiceUrl}/violation/report`, {
       driverAddress: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
       penalty: 5
+    }).catch((err) => {
+      console.error("Failed to report speed violation:", err.message);
     });
 
   }
@@ -80,9 +85,11 @@ async function processViolations(data) {
     addViolation(violation)
 
 
-    await axios.post("http://localhost:4007/violation/report", {
+    await axios.post(`${reputationServiceUrl}/violation/report`, {
       driverAddress: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
       penalty: 3
+    }).catch((err) => {
+      console.error("Failed to report braking violation:", err.message);
     });
 
   }
