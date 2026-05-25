@@ -1,7 +1,14 @@
-import 'package:flutter/material.dart';
+// ignore_for_file: deprecated_member_use
 
-import '../../core/widgets/gradient_background.dart';
-import '../auth/role_selector.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:lottie/lottie.dart';
+
+import '../../core/constants/colors.dart';
+import '../../core/constants/typography.dart';
+import '../../core/widgets/animated_background.dart';
+import '../../core/widgets/primary_button.dart';
+import '../auth/auth_gateway.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -11,146 +18,205 @@ class OnboardingScreen extends StatefulWidget {
 }
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
+  late final PageController _controller;
+  int _current = 0;
 
-  final PageController controller = PageController();
-
-  final pages = [
+  final _pages = [
     {
       'title': 'AI Powered Safety',
-      'subtitle': 'Real-time computer vision monitoring for every ride.',
+      'subtitle':
+          'Real-time computer vision monitors every ride for lane violations, harsh braking, and driver fatigue.',
       'image': 'assets/images/onboarding_ai.png',
+      'lottie': 'assets/lottie/Car GPS.json',
+      'color': AppColors.glowPurple,
     },
     {
       'title': 'Blockchain Trust',
-      'subtitle': 'Decentralized escrow and credibility systems.',
+      'subtitle':
+          'Decentralized escrow and on-chain credibility scoring — no intermediaries, full transparency.',
       'image': 'assets/images/onboarding_blockchain.png',
+      'lottie': 'assets/lottie/Successful Payment.json',
+      'color': AppColors.glowCyan,
     },
     {
       'title': 'Smart Urban Mobility',
-      'subtitle': 'Premium ride experience with intelligent automation.',
+      'subtitle':
+          'Premium ride experience with intelligent automation, live tracking, and AI safety monitoring.',
       'image': 'assets/images/onboarding_tracking.png',
+      'lottie': 'assets/lottie/2 points map route.json',
+      'color': AppColors.glowGreen,
     },
   ];
 
-  int current = 0;
+  @override
+  void initState() {
+    super.initState();
+    _controller = PageController();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
 
     return Scaffold(
-      body: GradientBackground(
-        child: Stack(
+      body: AnimatedBackground(
+        child: Column(
           children: [
+            Expanded(
+              child: PageView.builder(
+                controller: _controller,
+                onPageChanged: (v) => setState(() => _current = v),
+                itemCount: _pages.length,
+                itemBuilder: (_, index) {
+                  final page = _pages[index];
+                  final color = page['color'] as Color;
+                  return SafeArea(
+                    bottom: false,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 28),
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 20),
 
-            PageView.builder(
-              controller: controller,
-              onPageChanged: (value) {
-                setState(() {
-                  current = value;
-                });
-              },
-              itemCount: pages.length,
-              itemBuilder: (_, index) {
+                          // Image panel — reduced to 22% height (was 28%)
+                          Container(
+                            height: size.height * 0.22,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(24),
+                              // Reduced glow radius by ~25%
+                              boxShadow: [
+                                BoxShadow(
+                                  color: color.withOpacity(0.18),
+                                  blurRadius: 18, // was 30
+                                  spreadRadius: 0,
+                                ),
+                              ],
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(24),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      color.withOpacity(0.12),
+                                      Colors.black.withOpacity(0.4),
+                                    ],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                  ),
+                                  border: Border.all(
+                                    color: color.withOpacity(0.18),
+                                  ),
+                                  borderRadius: BorderRadius.circular(24),
+                                ),
+                                child: Image.asset(
+                                  page['image'] as String,
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
+                            ),
+                          ).animate().fadeIn(duration: 500.ms).slideY(
+                              begin: 0.15, end: 0, duration: 450.ms),
 
-                final page = pages[index];
+                          const SizedBox(height: 16),
 
-                return Padding(
-                  padding: const EdgeInsets.all(32),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
+                          // Lottie — reduced to 13% height (was 16%)
+                          SizedBox(
+                            height: size.height * 0.13,
+                            child: Lottie.asset(
+                              page['lottie'] as String,
+                              repeat: true,
+                              animate: true,
+                            ),
+                          ).animate().fadeIn(duration: 500.ms, delay: 150.ms),
 
-                      Hero(
-                        tag: page['title']!,
-                        child: Image.asset(
-                          page['image']!,
-                          height: 260,
-                        ),
+                          const SizedBox(height: 20),
+
+                          Text(
+                            page['title'] as String,
+                            textAlign: TextAlign.center,
+                            style: AppTypography.sectionTitle(size: 28),
+                          ).animate().fadeIn(duration: 500.ms, delay: 250.ms).slideY(
+                              begin: 0.15, end: 0, duration: 400.ms),
+
+                          const SizedBox(height: 12),
+
+                          // Fixed opacity — use explicit white color, not textSecondary
+                          Text(
+                            page['subtitle'] as String,
+                            textAlign: TextAlign.center,
+                            style: AppTypography.description(
+                              size: 14,
+                              color: Colors.white.withOpacity(0.75),
+                            ),
+                          ).animate().fadeIn(duration: 500.ms, delay: 350.ms),
+                        ],
                       ),
-
-                      const SizedBox(height: 60),
-
-                      Text(
-                        page['title']!,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          fontSize: 38,
-                          fontWeight: FontWeight.bold,
-                          height: 1.2,
-                        ),
-                      ),
-
-                      const SizedBox(height: 24),
-
-                      Text(
-                        page['subtitle']!,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          color: Colors.white70,
-                          height: 1.6,
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              },
+                    ),
+                  );
+                },
+              ),
             ),
 
-            Positioned(
-              bottom: 60,
-              left: 24,
-              right: 24,
-              child: Container(
-                height: 70,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30),
-                  gradient: const LinearGradient(
-                    colors: [
-                      Color(0xFF6D5DF6),
-                      Color(0xFF00D2FF),
-                    ],
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color(0xFF00D2FF)
-                          .withOpacity(0.3),
-                      blurRadius: 30,
-                    )
-                  ],
-                ),
-                child: ElevatedButton(
-                  onPressed: () {
-
-                    if (current == pages.length - 1) {
-
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => const RoleSelector(),
+            // Bottom controls
+            Padding(
+              padding: EdgeInsets.only(
+                left: 28,
+                right: 28,
+                bottom: MediaQuery.of(context).padding.bottom + 20,
+                top: 12,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: List.generate(
+                      _pages.length,
+                      (i) => AnimatedContainer(
+                        duration: const Duration(milliseconds: 300),
+                        margin: const EdgeInsets.symmetric(horizontal: 4),
+                        width: i == _current ? 24 : 8,
+                        height: 8,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4),
+                          color: i == _current
+                              ? AppColors.primary
+                              : Colors.white.withOpacity(0.3),
                         ),
-                      );
-
-                    } else {
-
-                      controller.nextPage(
-                        duration: const Duration(milliseconds: 400),
-                        curve: Curves.easeInOut,
-                      );
-                    }
-                  },
-                  child: Text(
-                    current == pages.length - 1
-                        ? 'Enter Ridezy'
-                        : 'Continue',
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
-                ),
+                  const SizedBox(height: 16),
+                  GlowButton(
+                    label: _current == _pages.length - 1
+                        ? 'Enter Ridezy'
+                        : 'Continue',
+                    height: 58,
+                    onTap: () {
+                      if (_current == _pages.length - 1) {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => const AuthGateway()),
+                        );
+                      } else {
+                        _controller.nextPage(
+                          duration: const Duration(milliseconds: 400),
+                          curve: Curves.easeInOut,
+                        );
+                      }
+                    },
+                  ),
+                ],
               ),
-            )
+            ),
           ],
         ),
       ),
